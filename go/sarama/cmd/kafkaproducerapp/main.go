@@ -19,7 +19,10 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGKILL)
 
-	producer, err := sarama.NewSyncProducer([]string{config.BootstrapServers}, nil)
+	producerConfig := sarama.NewConfig()
+	producerConfig.Producer.RequiredAcks = sarama.RequiredAcks(config.ProducerAcks)
+	producerConfig.Producer.Return.Successes = true
+	producer, err := sarama.NewSyncProducer([]string{config.BootstrapServers}, producerConfig)
 	if err != nil {
 		log.Printf("Error creating the Sarama sync producer: %v", err)
 		os.Exit(1)

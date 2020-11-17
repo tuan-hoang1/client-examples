@@ -12,6 +12,7 @@ const (
 	DelayEnvVar           = "DELAY_MS"
 	MessageEnvVar         = "MESSAGE"
 	MessageCountEnvVar    = "MESSAGE_COUNT"
+	ProducerAcksEnvVar    = "PRODUCER_ACKS"
 )
 
 // default values for environment variables
@@ -21,6 +22,7 @@ const (
 	DelayDefault            = 1000
 	MessageDefault          = "Hello from Go Kafka Sarama"
 	MessageCountDefault     = 10
+	ProducerAcksDefault     = int16(1)
 )
 
 // ProducerConfig defines the producer configuration
@@ -30,6 +32,7 @@ type ProducerConfig struct {
 	Delay            int
 	Message          string
 	MessageCount     int64
+	ProducerAcks     int16
 }
 
 func NewProducerConfig() *ProducerConfig {
@@ -39,6 +42,7 @@ func NewProducerConfig() *ProducerConfig {
 		Delay:            lookupIntEnv(DelayEnvVar, DelayDefault),
 		Message:          lookupStringEnv(MessageEnvVar, MessageDefault),
 		MessageCount:     lookupInt64Env(MessageCountEnvVar, MessageCountDefault),
+		ProducerAcks:     lookupInt16Env(ProducerAcksEnvVar, ProducerAcksDefault),
 	}
 	return &config
 }
@@ -67,4 +71,13 @@ func lookupInt64Env(envVar string, defaultValue int64) int64 {
 	}
 	int64Val, _ := strconv.ParseInt(envVarValue, 10, 64)
 	return int64Val
+}
+
+func lookupInt16Env(envVar string, defaultValue int16) int16 {
+	envVarValue, ok := os.LookupEnv(envVar)
+	if !ok {
+		return defaultValue
+	}
+	int16Val, _ := strconv.ParseInt(envVarValue, 10, 16)
+	return int16(int16Val)
 }
