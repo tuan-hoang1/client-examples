@@ -9,7 +9,7 @@
 
 DOCKERFILE_DIR     ?= ./
 DOCKER_REGISTRY    ?= docker.io
-DOCKER_ORG         ?= $(USER)
+DOCKER_ORG         ?= tuanhoang1
 DOCKER_TAG         ?= latest
 DOCKER_VERSION_ARG ?= latest
 

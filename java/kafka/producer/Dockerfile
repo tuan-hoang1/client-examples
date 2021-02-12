@@ -1,4 +1,4 @@
-FROM centos:7
+FROM registry.access.redhat.com/ubi7:latest
 
 RUN yum -y update && yum -y install java-11-openjdk-headless openssl && yum -y clean all
 
